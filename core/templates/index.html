@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp,container-queries"></script>
+  <style>
+    @keyframes rotate {
+        from {
+            transform: rotate(0deg);
+        }
+        to { 
+            transform: rotate(360deg);
+        }
+    }
+     
+    
+     @-webkit-keyframes rotate {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+        to { 
+            -webkit-transform: rotate(360deg);
+        }
+    }
+    
+    .load {
+        width: 100px;
+        height: 100px;
+        margin: 110px auto 0;
+        border:solid 10px #8822aa;
+        border-radius: 50%;
+        border-right-color: transparent;
+        border-bottom-color: transparent;
+         -webkit-transition: all 0.5s ease-in;
+        -webkit-animation-name:             rotate; 
+        -webkit-animation-duration:         1.0s; 
+        -webkit-animation-iteration-count:  infinite;
+        -webkit-animation-timing-function: linear;
+            
+             transition: all 0.5s ease-in;
+        animation-name:             rotate; 
+        animation-duration:         1.0s; 
+        animation-iteration-count:  infinite;
+        animation-timing-function: linear; 
+    }
+</style>
+  <title>AI Blog </title>
+</head>
+
+<body class="flex flex-col min-h-scrren bg-gray-200 font-sans antialiased">
+  
+    {% comment %} <nav class="bg-blue-600 p4 text-white flex justify-between">
+        <div>
+            <h1 class="text-3xl font-bold">AI Blog Generator</h1>
+        </div>
+        <div>
+            <a href="#" class="text-white hover:underline">Logout</a>
+        </div>
+    </nav>  {% endcomment %}
+    <br>
+    <br>
+    <div name="Main" class="flex-grow container mx-auto mt-10 px-4 sm:px-0">
+        <div class="max-x-3xl mx-auto bg-white p-6 rounded-lg shadow-md transition-transfrom transform hover:scale-105 ">
+            <div class="text-center">
+                <h2 class="text-2xl font-semibold mb-4">AI BLOG</h2>
+                <p class="text-gray-700">
+                    Generate High Quality Content from youtube videos and post them as Blog Articles
+                </p>
+            </div>
+            <br>
+            <div>
+                <h2 class="text-xl mb-4 font-semibold" >
+                    Enter Youtube Video Link
+                </h2>
+                <div class="flex space-x-4">
+
+                    <input type="url" id="ytlink" placeholder="Paste Your Youtube Link" class="flex-grow border border-blue-400 rounded-l-mdmd">
+                    <button id="generatebutton" class="bg-blue-600 text text-white px-4 py-2 rounded-r-md hover:bg-blue-700 transition-colors">Generate</button>
+                </div>
+                <div id="loadingcycle" class="load" style="display:none">
+
+                </div>
+                <section>
+                    <h2 class="text-xl mb-4 font-semibold">Generated Blog Section</h2>
+                    <div id="blogcontent" class="mt-2 text-gray-700 space-y-4">
+
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    <footer class="text-center p-4 text-black mt-6">Made By Sahal</footer>
+    <script>
+        document.getElementById("generatebutton").addEventListener("click",async ()=>{
+            const ytlink=document.getElementById("ytlink").value 
+            const blogcontent=document.getElementById("blogcontent")
+            const loadcycle=document.getElementById("loadingcycle")
+            if(ytlink){
+                loadcycle.style.display="block"
+                blogcontent.innerHTML=""
+                const endpoint="/generate_blog/"
+                try{
+                    const response=await fetch(endpoint,{
+                        method:"POST",
+                        headers:{
+                            "Content-Type":"application/json",
+                        },
+                        body:JSON.stringify({link:ytlink})
+
+                    })
+                    const data=await response.json()
+                   const d2= JSON.stringify(data)
+                    blogcontent.innerHTML=data["content"]
+                    
+                   
+                }
+                catch(error){
+                    console.log(error)
+                    alert("Something Went Wrong Please Try Again")
+                }
+                loadcycle.style.display="none"
+
+            }
+            else{
+                alert("Please Enter A Youtube Link")
+            }
+        })
+    </script>
+    {% endblock content %}
