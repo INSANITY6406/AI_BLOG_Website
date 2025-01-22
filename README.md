@@ -12,7 +12,7 @@
   Review and Edit Your Article Before Posting It
 </li>
 <h2>
-  What have i accomplished till now?(22/1/25)
+  What have i accomplished till now?(23/1/25)
 </h2>
 <li>
   Created A Basic Blog Website Frontend
@@ -23,9 +23,12 @@
 <li>
   The Transcription For The Entire Video is Generated
 </li>
+<li>
+  An Article For Youtube Video is Generated
+</li>
 <h2>What do i intend to work more?</h2>
 <li>
-  Use the Transcript to generate a well organized Article
+  Format and Organize the Article
 </li>
 <li>
   Make The Blog Website functional with different user roles(Default=Read, Create,Delete & Edit Own post, Mod=Read,Create,Delete Posts,Admin= All CRD Operations and UserManagement)
