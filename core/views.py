@@ -11,7 +11,7 @@ from django.conf import settings
 import assemblyai as aai
 from groq import Groq
 from .models import *
-# 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
+
 # Create your views here.
 @login_required(login_url="/login")
 def home(request):
@@ -100,7 +100,7 @@ def download_audio(url,out_path=settings.MEDIA_ROOT):
     
 def get_transcription(link):
     download_audio(link) 
-    aai.settings.api_key="44b66af42f64486e8bd9dd61501ff060"
+    aai.settings.api_key="<API KEY>"
     transcriber=aai.Transcriber()
     transcript=transcriber.transcribe(audfile)
     global article 
@@ -108,9 +108,9 @@ def get_transcription(link):
     
 
 def get_article(article):
-    GROQ_API_KEY="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"
+    
     client = Groq(
-    api_key="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"
+    api_key="<API KEY>"
     )
     prompt = f"Based on the following transcript from a YouTube video, write a comprehensive blog article, write it based on the transcript, but dont make it look like a youtube video, make it look like a proper blog article:\n\n{article}\n\nArticle:"
     chat_completion = client.chat.completions.create(
