@@ -17,14 +17,14 @@
                 <h2 class="text-xl mb-4 font-semibold">Blog Post Details</h2>
                 <div class="border border-gray-300 p-4 rounded-lg">
                     <h3 class="text-lg font-semibold">
-                        Blog post Title
+                        {{post.yt_Title}}
                     </h3>
-                    <p class="text-gray-700">Content</p>
+                    <p class="text-gray-700">{{post.generated_content}}</p>
                     <hr class="my-4 border-gray-300">
                     <h4 class="text-lg font-semibold">Youtube Video</h4>
-                    <p class="text-gray-700">Title of The Video</p>
+                    <p class="text-gray-700">{{post.yt_Title}}</p>
                     <h4 class="text-lg font-semibold mt-4">Yt Link</h4>
-                    <a href="#" class="text-blue-800 hover:underline">WWW.Youtube.com</a>
+                    <a href="#" class="text-blue-800 hover:underline">{{post.yt_url}}</a>
                 </div>
             </section>
         </div>

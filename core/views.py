@@ -5,13 +5,18 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
+import os
 from yt_dlp import YoutubeDL
 from django.conf import settings
 import assemblyai as aai
+from groq import Groq
+from .models import *
+# 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
 # Create your views here.
 @login_required(login_url="/login")
 def home(request):
-    return render(request,"home.html")
+    posts=blog_post.objects.all()
+    return render(request,"home.html",{"posts":posts})
 
 
 def signUp(request):
@@ -33,10 +38,16 @@ def generate_blog(request):
         try:
             data=json.loads(request.body)
             yt_link=data["link"]
-            text=get_transcription(yt_link)
+            get_transcription(yt_link)
+            title=get_title(yt_link)
+            text=get_article(article)
+            post=blog_post.objects.create(user=request.user,yt_Title=title,yt_url=yt_link,generated_content=text)
+            post.save()
             
-            
-            return JsonResponse({"content":text})
+            if text:
+                return JsonResponse({"content":text,"title":title})
+            else:
+                raise ValueError 
         except Exception as er:
             print(er)
             
@@ -92,10 +103,30 @@ def get_transcription(link):
     aai.settings.api_key="44b66af42f64486e8bd9dd61501ff060"
     transcriber=aai.Transcriber()
     transcript=transcriber.transcribe(audfile)
-    return transcript.text
+    global article 
+    article=transcript.text
+    
 
+def get_article(article):
+    GROQ_API_KEY="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"
+    client = Groq(
+    api_key="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"
+    )
+    prompt = f"Based on the following transcript from a YouTube video, write a comprehensive blog article, write it based on the transcript, but dont make it look like a youtube video, make it look like a proper blog article:\n\n{article}\n\nArticle:"
+    chat_completion = client.chat.completions.create(
+    messages=[
+        {
+            "role": "user",
+            "content": prompt,
+        }
+    ],
+    model="llama-3.3-70b-versatile",
+        )
+    return chat_completion.choices[0].message.content.strip()
+    
 def create_post(request):
     return render(request,"index.html")
 
-def detail_post(request):
-    return render(request,"blog_details.html")
+def detail_post(request,id):
+    post=blog_post.objects.get(id=id)
+    return render(request,"blog_details.html",{"post":post})

@@ -15,12 +15,14 @@
         <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
             <section>
                 <h2 class="text-xl mb-4 font-semibold">All Blog Posts</h2>
+                {% for post in posts %}
                 <div class="space-y-4">
                     <div class=" border border-gray-300 p-4 rounded-lg">
-                        <h3 class="text-lg font-semibold"><a href="{% url "detailpost" %}">Blog Post Title 1</a></h3>
+                        <h3 class="text-lg font-semibold"><a href="{% url "detailpost" post.id %}">{{post.yt_Title}}</a></h3>
                         <p>This is the Content</p>
                     </div>
                 </div>
+                {% endfor %}
             </section>
         </div>
     </div>
